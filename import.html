@@ -12,21 +12,21 @@
     <div>
         <form method="post" action="index.php" enctype="multipart/form-data">
 
-            <h2 style="text-align: center;">Import Excel into Database</h2>
+            <h2>Import Excel into Database</h2>
 
-            <label for="fname">Database Name</label>
+            <label>Database Name</label>
             <input type="text" name="dbname" id="dbname" required>
 
-            <label for="fname">Table Name</label>
+            <label>Table Name</label>
             <input type="text" name="tblname" id="tblname" required>
 
-            <label for="lname">Choose Your CSV File </label>
+            <label>Choose Your CSV File </label>
             <input type="file" name="csvfile1" id="file" required>
 
-            <label for="lname2">Choose Your CSV File 2 </label>
+            <label>Choose Your CSV File 2 </label>
             <input type="file" name="csvfile2" id="file2" required>
 
-            <input type="hidden" name="number_of_db" id="nf" value="2">
+            <input type="hidden" name="number_of_db" id="numOfDb" value="2">
 
             <input type="submit" name="submit" value="Submit">
         </form>
