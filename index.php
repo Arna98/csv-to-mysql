@@ -23,6 +23,9 @@ if (isset($_POST['submit']))
         // get Header Row
         $headerRow = getHeaderRow($sourceFile);
 
+        // get 10 Rows of csv file that is not empty
+        $get10Rows = getCustomCSV($sourceFile);
+
     }
 }
 
@@ -51,4 +54,34 @@ function cleanseHeaderRow($headerRow)
     return $newHeaderRow;
 }
 
+// get 10 Rows of csv file that is not empty for analisis data
+function getCustomCSV($srcFile, $lenght = 10)
+{
+    $numberRow = 0;
+    $output = array();
+
+    if ($file = fopen($srcFile, "r")) {
+        while (($data = fgetcsv($file, 10000, ",")) == true) {
+            if ($numberRow != 0) {
+                if ($lenght) {
+                    $notEmptyLine = true;
+                    foreach ($data as $row) {
+                        if (empty($row)) {
+                            $notEmptyLine = false;
+                        }
+                    }
+                    if ($notEmptyLine) {
+                        $output[] = $data;
+                        $lenght--;
+                    }
+                } else {
+                    break;
+                }
+            }
+            $numberRow++;
+        }
+        fclose($file);
+    }
+    return $output;
+}
 ?>
