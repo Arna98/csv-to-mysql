@@ -26,6 +26,9 @@ if (isset($_POST['submit']))
         // get 10 Rows of csv file that is not empty
         $get10Rows = getCustomCSV($sourceFile);
 
+        // analisis data for detect it's type
+        $dataTypes = analysisDataTypes($get10Rows);
+
     }
 }
 
@@ -83,5 +86,71 @@ function getCustomCSV($srcFile, $lenght = 10)
         fclose($file);
     }
     return $output;
+}
+
+// analisis data for detect integer, varchar , datetime type
+function analysisDataTypes($get10Rows)
+{
+    $dataTypes = array();
+    // for each rows
+    foreach ($get10Rows as $key => $value) {
+        // $numberOfCol = sizeof($value);
+        
+        // for each cells of row
+        foreach ($value as $cell) {
+            if (is_numeric($cell)) {
+                if (detectTinyIntType((int)$cell)) {
+                    $dataTypes[$key][] = "TINYINT";
+                } else {
+                    $dataTypes[$key][] = "INT";
+                }
+            } elseif (detectDateTimeType($cell)) {
+                $dataTypes[$key][] = "DATETIME";
+            } else {
+                $dataTypes[$key][] = "VARCHAR";
+            }
+        }
+    }
+
+
+    $compare = true;
+    $DT = array();
+    // size of columns csv file
+    $numberOfCol = sizeof($get10Rows[0]);
+    // Compare Data Types
+    for ($col = 0; $col < $numberOfCol; $col++) {
+        for ($row = 1; $row <= 9; $row++) {
+            if ($dataTypes[0][$col] == $dataTypes[$row][$col]) {
+                $DT[$col] = $dataTypes[0][$col];
+            } else {
+                $compare = false;
+            }
+        }
+    }
+    
+    if ($compare) {
+        return $DT;
+    } else {
+        echo "<pre"."Error : The data type of your CSV file column is not the same!"."</pre>";
+        return $dataTypes;
+    }
+}
+
+// detect date time type
+function detectDateTimeType($val)
+{
+    if (preg_match('/(.*)([0-9]{2}\/[0-9]{2}\/[0-9]{2,4})(.*)/', $val)) {
+        return 1;
+    } elseif (preg_match('/(.*)([0-9]{2}\-[0-9]{2}\-[0-9]{2,4})(.*)/', $val)) {
+        return 1;
+    } else {
+        return 0;
+    }
+}
+
+// detect boolean (TINYINT) type
+function detectTinyIntType($val)
+{
+    return (strlen($val) == 1 && ($val == 0 || $val == 1)) ? 1 : 0;
 }
 ?>
