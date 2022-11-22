@@ -29,6 +29,9 @@ if (isset($_POST['submit']))
         // analisis data for detect it's type
         $dataTypes = analysisDataTypes($get10Rows);
 
+        // Merg header name & data type & size column
+        $csvColumns = createCsvColumns($headerRow, $dataTypes);
+
     }
 }
 
@@ -153,4 +156,30 @@ function detectTinyIntType($val)
 {
     return (strlen($val) == 1 && ($val == 0 || $val == 1)) ? 1 : 0;
 }
+
+// Merg header name & data type & size column to one string
+function createCsvColumns($headerRow, $dataTypes)
+{
+    $csvColumns = array();
+    $sizeColumn = 0;
+
+    // We determine the data type and size for each column
+    for ($count = 0 ; $count < sizeof($headerRow) ; $count++) {
+        if ($dataTypes[$count] == 'INT') {
+            $sizeColumn = 20;
+        } elseif ($dataTypes[$count] == 'TINYINT') {
+            $sizeColumn = 1;
+        } elseif ($dataTypes[$count] == 'VARCHAR') {
+            $sizeColumn = 255;
+        } elseif ($dataTypes[$count] == 'DATETIME') {
+            $sizeColumn = 6;
+        }
+        $csvColumns[] = "$headerRow[$count] " . strtoupper($dataTypes[$count]) . "({$sizeColumn})";
+    }
+    $csvColumns = join(', ', $csvColumns);
+
+    return $csvColumns;
+}
+
+
 ?>
