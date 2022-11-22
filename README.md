@@ -1,2 +1,2 @@
 # csvtomysql
-Getting bulk information (.csv) from the client and saving some specific data in the database (mysql)
+Getting bulk information (.csv) from the client and creating a database and table based on the type of data received (identifying the type of data) and storing them in the database (mysql)
