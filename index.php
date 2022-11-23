@@ -1,6 +1,7 @@
 <?php
 
 include_once 'config.php';
+include_once 'dbTable.php';
 
 // If this were true, $_POST['submit'] is set
 if (isset($_POST['submit']))
@@ -32,6 +33,11 @@ if (isset($_POST['submit']))
         // Merg header name & data type & size column
         $csvColumns = createCsvColumns($headerRow, $dataTypes);
 
+        // Create instance of DBTable class
+        $createTbl = new dbTable($db, $tblName, $csvColumns);
+        // Create Table
+        $createTbl->createTable();
+        
     }
 }
 
