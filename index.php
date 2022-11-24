@@ -33,11 +33,15 @@ if (isset($_POST['submit']))
         // Merg header name & data type & size column
         $csvColumns = createCsvColumns($headerRow, $dataTypes);
 
+        // Detection of columns index of DataTime type
+        $columnsDataTime = setColumnsDataTime($dataTypes);
+
         // Create instance of DBTable class
-        $createTbl = new dbTable($db, $tblName, $csvColumns);
+        $createTbl = new dbTable($db, $tblName, $csvColumns, $headerRow, $sourceFile, $columnsDataTime);
         // Create Table
         $createTbl->createTable();
-        
+        // insert Data in database
+       // $createTbl->loadDataToTable();
     }
 }
 
@@ -185,6 +189,19 @@ function createCsvColumns($headerRow, $dataTypes)
     $csvColumns = join(', ', $csvColumns);
 
     return $csvColumns;
+}
+
+// Detection of columns of DataTime type and storing columns index
+function setColumnsDataTime($dataTypes)
+{
+    $columnsDataTime = array();
+    foreach ($dataTypes as $key => $value) {
+        if( $value == "DATETIME"){
+            $columnsDataTime[] = $key;
+        }
+    }
+
+    return $columnsDataTime;
 }
 
 
