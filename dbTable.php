@@ -35,15 +35,13 @@ class DBTable
     {
         // counts the total number of rows present in the database table.
         $query = "SELECT COUNT(*) count from $this->tableName";
-        $stmt = $this->connection->exec($query);
+        $stmt = $this->connection->query($query);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $firstCount = (int)$row['count'];
 
         $atHeaderRow = $this->createHeaderString($this->headers, $this->colDT);
         $setString = $this->createSetString($this->headers, $this->colDT);
-        print_r($atHeaderRow);
         $atHeaderRow = join(', ', $atHeaderRow);
-        print_r($atHeaderRow);
 
         // Load data (csv file) to table
         $query = ' LOAD DATA LOCAL INFILE "' . $this->srcFile . '"
@@ -54,11 +52,11 @@ class DBTable
             (' . $atHeaderRow . ') 
             ' . $setString . ';';
 
-        $this->connection->exec($query);
+        $stmt = $this->connection->exec($query);
 
         // counts the total number of rows present in the database table.
         $query = "SELECT COUNT(*) count from $this->tableName";
-        $stmt = $this->connection->exec($query);
+        $stmt = $this->connection->query($query);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $secCount = (int)$row['count'];
 
