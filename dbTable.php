@@ -39,8 +39,8 @@ class DBTable
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         $firstCount = (int)$row['count'];
 
-        $atHeaderRow = createHeaderString($this->headers, $this->colDT);
-        $setString = createSetString($this->headers, $this->colDT);
+        $atHeaderRow = $this->createHeaderString($this->headers, $this->colDT);
+        $setString = $this->createSetString($this->headers, $this->colDT);
         print_r($atHeaderRow);
         $atHeaderRow = join(', ', $atHeaderRow);
         print_r($atHeaderRow);
