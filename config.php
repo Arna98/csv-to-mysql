@@ -20,7 +20,10 @@ class Config{
     //echo $this->createDB();
     if($this->createDB()){
       try{
-        $this->connection = new PDO("mysql:host=". $this->host .";dbname=" . $this->dbName, $this->username, $this->password);
+        // If this attribute(MYSQL_ATTR_LOCAL_INFILE) is set to true on a PDOStatement, the MySQL driver will use the buffered versions of the MySQL API
+        $this->connection = new PDO("mysql:host=". $this->host .";dbname=" . $this->dbName, $this->username, $this->password, array(
+        PDO::MYSQL_ATTR_LOCAL_INFILE => true,
+    ));
         // set the PDO error mode to exception
         $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         echo "Connected successfully";
