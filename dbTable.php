@@ -20,7 +20,7 @@ class DBTable
         $this->colDT = $columnsDataTime;
     }
 
-    function createTable()
+    public function createTable()
     {
         $query = "CREATE TABLE IF NOT EXISTS $this->tableName (
             ID int(11) AUTO_INCREMENT PRIMARY KEY,
@@ -31,7 +31,7 @@ class DBTable
     }
 
     // Load Data(csv file) to table by one query
-    function loadDataToTable()
+    public function loadDataToTable()
     {
         // counts the total number of rows present in the database table.
         $query = "SELECT COUNT(*) count from $this->tableName";
@@ -70,7 +70,7 @@ class DBTable
     }
 
     // create string for @ header
-    function createHeaderString($headerRow, $columnsDataTime)
+    private function createHeaderString($headerRow, $columnsDataTime)
     {
         foreach ($headerRow as $key => $value) {
             foreach ($columnsDataTime as $index) {
@@ -83,7 +83,7 @@ class DBTable
     }
 
     // create string for set query | STR_TO_DATE
-    function createSetString($headerRow, $columnsDataTime)
+    private function createSetString($headerRow, $columnsDataTime)
     {
         $setString = '';
         $commaState = false;
