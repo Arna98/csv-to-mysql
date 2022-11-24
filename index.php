@@ -41,7 +41,7 @@ if (isset($_POST['submit']))
         // Create Table
         $createTbl->createTable();
         // insert Data in database
-       // $createTbl->loadDataToTable();
+        $createTbl->loadDataToTable();
     }
 }
 
